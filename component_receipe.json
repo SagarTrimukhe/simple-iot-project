@@ -1,0 +1,46 @@
+{
+	"RecipeFormatVersion": "2020-01-25",
+	"ComponentName": "AV_PubSub",
+	"ComponentVersion": "1.0.0",
+	"ComponentType": "aws.greengrass.generic",
+	"ComponentDescription": "This component subscribes to 'av_image_detection/request' topic and responses to messages on 'av_image_detection/response'",
+	"ComponentPublisher": "<Name>",
+	"ComponentConfiguration": {
+		"DefaultConfiguration": {
+			"accessControl": {
+				"aws.greengrass.ipc.mqttproxy": {
+					"com.example.MyIoTCorePubSubComponent:mqttproxy:1": {
+						"policyDescription": "Allows access to publish/subscribe to all topics.",
+						"operations": [
+							"aws.greengrass#PublishToIoTCore",
+							"aws.greengrass#SubscribeToIoTCore"
+						],
+						"resources": [
+							"*"
+						]
+					}
+				}
+			}
+		}
+	},
+	"ComponentDependencies": {
+		"aws.greengrass.TokenExchangeService": {
+			"VersionRequirement": ">=2.0.0 <3.0.0",
+			"DependencyType": "HARD"
+		}
+	},
+	"Manifests": [
+		{
+			"Lifecycle": {
+				"Install": "pip3 install --user awsiotsdk boto3 opencv-python",
+				"Run": "python3 -u {artifacts:path}/AVPubSub.py autonomous-vehicle-iot-proj-bucket av_image_detection/request av_image_detection/response\n"
+			},
+			"Artifacts": [
+				{
+					"Uri": "s3://autonomous-vehicle-iot-proj-bucket/artifacts/AVPubSub.py"
+				}
+			]
+		}
+	],
+	"Lifecycle": {}
+}
