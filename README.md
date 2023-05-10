@@ -110,3 +110,8 @@ sudo usermod -a -G video ggc_user
 ## Testing:
 AWS IoT Core platform provides a MQTT Test client which is available under Test section.
 
+
+https://github.com/SagarTrimukhe/simple-iot-project/assets/46806187/e58f31d6-32d0-4e43-a178-d304e5064517
+
+
+
