@@ -1,4 +1,3 @@
-
 from datetime import datetime
 import time
 import traceback
@@ -53,12 +52,9 @@ def take_picture():
     # reading the input using the camera
     result, image = cam.read()
     
-    # If image will detected without any error, 
-    # show result
     if result:  
         # saving image in local storage
         imwrite("photo.png", image)  
-    # If captured image is corrupted, moving to else part
     else:
         print("No image detected. Please! try again")
 
@@ -101,8 +97,6 @@ class StreamHandler(client.SubscribeToIoTCoreStreamHandler):
         pass
 
 # Setup the MQTT Subscription
-
-
 request = SubscribeToIoTCoreRequest()
 request.topic_name = REQUEST_TOPIC
 request.qos = QOS.AT_MOST_ONCE
