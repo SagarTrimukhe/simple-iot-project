@@ -3,8 +3,7 @@ A simple project that demonstrates how to setup an IoT application using AWS IoT
 
 Below is the high level architecture.
 
-
-
+![component-diagram](/images/components.png)
 
 
 ## Requirements:
