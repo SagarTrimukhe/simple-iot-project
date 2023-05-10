@@ -1,30 +1,36 @@
 # simple-iot-project
-A simple project that demonstrates on how to setup a simple IoT application using AWS IoT core, AWS Greengrass.
+A simple project that demonstrates how to setup an IoT application using AWS IoT core and AWS Greengrass.
 
 Below is the high level architecture.
 
 
 
-Requirements:
-1. A Virtual machine. (Host computer can also be used but VM is preferred)
-2. AWS CLI
-3. Python runtime
-4. Laptop with webcam
-5. Install the Oracle extension pack to attach the host webcam to VM:
 
 
-Steps to setup and run the project
+## Requirements:
+1. A Virtual machine with access to a webcam. (Host computer can also be used but VM is preferred)
+with following tools installed
+    1. AWS CLI
+    2. Python runtime
+
+2. AWS Account
+
+
+If you are using an Oracle Virual box to create VM then chekout this article which explains how to connect host webcam to VM.
+
+## Steps
+### Create AWS resources 
 1. Create a s3 bucket.
+    bucket name: autonomous-vehicle-iot-proj-bucket
+    bucket configuration: Provide public access to the bucket.
+
 Copy the artificats (Python code) to the s3 bucket
 
 aws s3 cp  AVPubSub.py s3://autonomous-vehicle-iot-proj-bucket/artifacts/AVPubSub.py
 
-2. Create a AWS user.
-    av-edge-server-management-user
 
-    Create Access key, secret key for the user and export them as env vars in the VM.
-
-3. Create and attach policy to the user.
+2. Create an IAM policy with the below permissions.
+Policy-name: greengrass-access-policy
 
 ```
 {
@@ -49,18 +55,37 @@ aws s3 cp  AVPubSub.py s3://autonomous-vehicle-iot-proj-bucket/artifacts/AVPubSu
 }
 ```
 
+3. Create an IAM user.
+    username: av-edge-server-management-user
+    Policy: greengrass-access-policy
+    
+    Create Access key, secret key for the user and export them as environment variables in the VM.
 
-4. Add a new core device in AWS IoT Core.
-    Follow the instrcution 
-    Core-device-name: AV_Edge_Server
+### VM Setup
+Install python and AWS CLI tool.
+Export the AWS ACCESS KEY and SECRET KEY that was created in earlier steps.
+
+### AWS Greengrass setup
+Go to AWS IOT Service: https://us-east-1.console.aws.amazon.com/iot/home?region=us-east-1#/home
+
+Go to core devices section which is under Manage -> GreenGrass Devices 
+
+1. Add a new core device in AWS IoT Core.
+    Core-device-name: AV_Edge_Server.
     Create a new group or reuse existing group.
 
-A new IAM policy will be created once the greengrass is installed on the VM
-Make sure to update that policy by giving access to s3 bucket creted. Read access
+    Follow the instrcutions mentioned in the wizard.
+
+Once this step is completed, you should see a new core device in the AWS.
+
+add image here
+
+A new IAM policy also will be created once the greengrass is installed on the VM
+Make sure to update that policy by giving access to s3 bucket (autonomous-vehicle-iot-proj-bucket) that was created.
 
 
 5. Create new component:
-    The receipe can be found at this location.
+    The receipe JSON can be found at this location.
 
 5. Create new Deployment:
     name: AV_Edge_Server_Deployment
@@ -70,8 +95,19 @@ Make sure to update that policy by giving access to s3 bucket creted. Read acces
         aws.greengrass.nucleus
         aws.greengrass.Cli
 
-    The code from the s3 bucket will be deployed to the edge server
+    The code from the s3 bucket (autonomous-vehicle-iot-proj-bucket) will be deployed to the edge server.
 
-    Run below command in the VM to check logs 
-    sudo tail -F  /greengrass/v2/logs/AV_PubSub.log
+    
+## Debugging steps:
+Run below command in the VM to check logs 
+```
+sudo tail -F  /greengrass/v2/logs/AV_PubSub.log
+```
+
+If Camera is not accessible to the python application, it might be user permission issue. Run the below command to provide access
+```
+sudo usermod -a -G video ggc_user 
+```
+## Testing:
+AWS IoT Core platform provides a MQTT Test client which is available under Test section.
 
