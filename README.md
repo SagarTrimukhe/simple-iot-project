@@ -24,9 +24,9 @@ If you are using an Oracle Virual box to create VM then chekout this article whi
     bucket configuration: Provide public access to the bucket.
 
 Copy the artificats (Python code) to the s3 bucket
-
+```
 aws s3 cp  AVPubSub.py s3://autonomous-vehicle-iot-proj-bucket/artifacts/AVPubSub.py
-
+```
 
 2. Create an IAM policy with the below permissions.
 Policy-name: greengrass-access-policy
@@ -76,15 +76,12 @@ Go to core devices section which is under Manage -> GreenGrass Devices
     Follow the instrcutions mentioned in the wizard.
 
 Once this step is completed, you should see a new core device in the AWS.
-
-add image here
-
 A new IAM policy also will be created once the greengrass is installed on the VM
 Make sure to update that policy by giving access to s3 bucket (autonomous-vehicle-iot-proj-bucket) that was created.
 
 
 5. Create new component:
-    The receipe JSON can be found at this location.
+    The receipe JSON can be found at this [location](https://github.com/SagarTrimukhe/simple-iot-project/blob/main/component_recipe.json).
 
 5. Create new Deployment:
     name: AV_Edge_Server_Deployment
