@@ -30,7 +30,7 @@ aws s3 cp  AVPubSub.py s3://autonomous-vehicle-iot-proj-bucket/artifacts/AVPubSu
 
 2. Create an IAM policy with the below permissions.
 Policy-name: greengrass-access-policy
-
+Update the policy for more granular control of resources as per your requirment. 
 ```
 {
     "Version": "2012-10-17",
